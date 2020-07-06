@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.screctzone.matrix.MatrixTool;
+import com.example.screctzone.matrix.MatrixToolActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openMatrixActivity(View view) {
-        Intent intent = new Intent(this, MatrixTool.class);
+        Intent intent = new Intent(this, MatrixToolActivity.class);
         startActivity(intent);
     }
 }
