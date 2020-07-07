@@ -12,6 +12,7 @@
         android:layout_height="120dp"
         android:background="#DCDCDC"
         android:elevation="2dp"
+        android:gravity="bottom|end"
         android:text="@string/matrix_display_1"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +27,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_view">
+        app:layout_constraintTop_toBottomOf="@+id/activity_matrix_tool_recyclerview_1">
 
         <Button
             android:id="@+id/button3"
@@ -41,7 +42,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_view"
+        android:id="@+id/activity_matrix_tool_recyclerview_1"
         android:layout_width="300dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
@@ -53,25 +54,26 @@
         android:id="@+id/constraintLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintBottom_toTopOf="@+id/activity_matrix_tool_calc_1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/list_view"
+        app:layout_constraintStart_toEndOf="@+id/activity_matrix_tool_recyclerview_1"
         app:layout_constraintTop_toBottomOf="@+id/matrix_display_1">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/activity_matrix_tool_calc_1"
         android:layout_width="0dp"
         android:layout_height="270dp"
         android:background="#709EC3"
         android:elevation="5dp"
         android:gravity="center"
+        android:onClick="calc"
         android:text="@string/matrix_calculate_1"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/list_view"
+        app:layout_constraintStart_toEndOf="@+id/activity_matrix_tool_recyclerview_1"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
 

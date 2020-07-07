@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Screct Zone</string>
-    <string name="matrix">matrix</string>
+    <string name="matrix_en">matrix</string>
+    <string name="matrix">矩阵</string>
     <string name="matrix_display_1">显示屏</string>
     <string name="matrix_calculate_1">计\n算</string>
     <string name="add_matrix">添加矩阵</string>

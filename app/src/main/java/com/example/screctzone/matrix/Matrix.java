@@ -7,6 +7,8 @@ public class Matrix {
     private int column;
     private int row;
 
+    public static final Matrix _1 = new Matrix(1, 1);
+
     private final ArrayList<ArrayList<Integer>> core;
 
     public Matrix(int row, int column){
@@ -37,17 +39,14 @@ public class Matrix {
     }
 
     public static Matrix decode(String s){
-
         String[] ss = s.split("\n");
         int row = ss.length, column = 0;
-        for(int i = 0; i < row; i++){
-            int k;
-            ss[i] = ss[i].trim();
-            if((k = ss[i].length()) >= column){
-                column = k;
-            }
+
+        for (int i = 0; i < row; i++) {
+            String[] cs = ss[i].split(" ");
+            int l1 = cs.length;
+            column = Math.max(column, l1);
         }
-        column = (column + 1) / 2;
 
         Matrix m = new Matrix(row, column);
 
@@ -90,7 +89,7 @@ public class Matrix {
             for (int j = 0; j < column; j++){
                 int aa = a.get(i,j), bb= b.get(i,j);
                 int cc = add ? aa + bb : aa - bb;
-                matrix.set(row, column, cc);
+                matrix.set(i, j, cc);
             }
         }
 
@@ -113,9 +112,10 @@ public class Matrix {
         return m;
     }
 
-    private static Matrix exec(Map<String,Matrix> map, String raw) throws MatrixException{
+    public static Matrix exec(Map<String,Matrix> map, String raw) throws MatrixException{
         raw = raw.trim();
         int l = raw.length();
+        boolean outFromBrackets = false;
 
         if (!tool.containsOperator(raw)) {
             return map.get(raw);
@@ -136,12 +136,15 @@ public class Matrix {
                 if (raw.contains(")")) {
                     int ind = raw.lastIndexOf(")");
                     if(ind - i > 1){
-                        ms[k++] = exec(map, raw.substring(i + 1, ind - 1));
+                        String s = raw.substring(i + 1, ind);
+                        ms[k] = exec(map, s);
+                        outFromBrackets = true;
                     }
                     i = ind;
                 } else {
                     if(i == l - 1 && i > p1){
-                        ms[k++] = map.get(raw.substring(p1, i - 1));
+                        String s = raw.substring(p1, i);
+                        ms[k++] = map.get(s);
                         break;
                     }
                 }
@@ -151,14 +154,20 @@ public class Matrix {
             }
 
             if (tool.isOperator(c)) {
-                ms[k] = map.get(raw.substring(p1, p2));
+                if(!outFromBrackets){
+                    String s = raw.substring(p1, p2 + 1);
+                    ms[k] = map.get(s);
+                } else {
+                    outFromBrackets = false;
+                }
                 cs[k] = c;
                 k++;
                 p1 = p2 = i + 1;
             } else {
                 p2 = i;
                 if(i == l - 1){
-                    ms[k++] = map.get(raw.substring(p1, p2));
+                    String s = raw.substring(p1, p2 + 1);
+                    ms[k++] = map.get(s);
                 }
             }
         }
@@ -186,7 +195,7 @@ public class Matrix {
                 pom[cp - 1] = cs[i];
 
                 p++;
-                ne[p] = ms[p + 1];
+                ne[p] = ms[i + 1];
             } else throw new MatrixException();
         }
 
@@ -196,7 +205,7 @@ public class Matrix {
             Matrix[] mmm = new Matrix[p + 1];
             char[] ccc = new char[cp];
             System.arraycopy(ne, 0, mmm, 0, p + 1);
-            System.arraycopy(pom, 0, ccc, 0, p);
+            System.arraycopy(pom, 0, ccc, 0, cp);
             return plusOrMinus(ccc, mmm);
         }
     }
@@ -219,7 +228,7 @@ public class Matrix {
         if(cl != ml - 1 ) throw new MatrixException();
         Matrix m = ms[0];
         for (int i = 0; i < cl; i++) {
-            m = addOrMinus(ms[i], ms[i++], tool.isPlus(cs[i]));
+            m = addOrMinus(m, ms[i+1], tool.isPlus(cs[i]));
         }
         return m;
     }
