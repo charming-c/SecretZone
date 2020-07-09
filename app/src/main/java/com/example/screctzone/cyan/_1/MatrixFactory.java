@@ -85,11 +85,13 @@ public class MatrixFactory {
             for (int i = 0; i < cmd.length; i++) {
                 char c = cmd[i];
                 if (isLeftBracket(c)) {
-                    lCount++;
+                    lCount = 1;
                     int rPos = i + 1;
                     for (; rPos < cmd.length; rPos++) {
-
-                        if (isRightBracket(cmd[rPos])) {
+                        char cc = cmd[rPos];
+                        if (isLeftBracket(cc)){
+                            lCount++;
+                        } else if (isRightBracket(cc)) {
                             lCount--;
                         }
 
@@ -102,16 +104,17 @@ public class MatrixFactory {
                         int len = rPos - i - 1;
 
                         if (len > 0) {
-
                             char[] toDecode = new char[len];
                             System.arraycopy(cmd, i + 1, toDecode, 0, len);
 
                             Matrix m = decode(toDecode, map);
 
                             keepInPool(cmd, i, rPos + 1, m );
-                        } else {
-                            i = rPos + 1;
+                        } else if (len == 0) {
+                            keepInPool(cmd, i, rPos + 1, null);
                         }
+
+                        i = rPos;
                     }
                 }
             }
@@ -270,7 +273,9 @@ public class MatrixFactory {
 
     private void push(Matrix m){
         Queue<Matrix> queue = pool.peek();
-        queue.add(m);
+        if (m != null) {
+            queue.add(m);
+        }
     }
 
     private Matrix pull(){
