@@ -1,30 +1,26 @@
 package com.example.screctzone.matrix;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.screctzone.R;
+import com.example.screctzone.cyan._1.MatrixFactory;
+import com.example.screctzone.cyan._1.math.Matrix;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Set;
 
 public class MatrixToolActivity extends AppCompatActivity {
 
@@ -60,7 +56,7 @@ public class MatrixToolActivity extends AppCompatActivity {
                 String matrix = data.getStringExtra(MatrixToolDialogActivity.MATRIX_STRING);
 
                 if (mark != null && matrix != null) {
-                    map.put(mark, Matrix.decode(matrix));
+                    map.put(mark, MatrixFactory.newInstance().decode(matrix));
                 }
                 refreshMapView();
             }
@@ -98,7 +94,7 @@ public class MatrixToolActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 try {
-                    Matrix m = Matrix.exec(map, calc_cmd);
+                    Matrix m = MatrixFactory.newInstance().decode(calc_cmd.toCharArray(), map);
                     display.setText(m.toString());
                 } catch (Exception e) {
                     e.printStackTrace();

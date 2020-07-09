@@ -9,9 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.screctzone.R;
+import com.example.screctzone.cyan._1.math.Matrix;
+import com.example.screctzone.cyan._1.math.MatrixRing;
 
 import java.util.Map;
-import java.util.Set;
 
 public class MatrixItemAdapter extends RecyclerView.Adapter<MatrixItemAdapter.MatrixItemView> {
     private Map<String, Matrix> map;
@@ -44,7 +45,7 @@ public class MatrixItemAdapter extends RecyclerView.Adapter<MatrixItemAdapter.Ma
             if (key != null && m != null) {
                 holder.bind(key, m);
             } else {
-                holder.bind("", Matrix._1);
+                holder.bind("", MatrixRing.instance().zero());
             }
         }
     }

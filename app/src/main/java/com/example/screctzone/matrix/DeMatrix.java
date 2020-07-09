@@ -3,15 +3,15 @@ package com.example.screctzone.matrix;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Matrix {
+public class DeMatrix {
     private int column;
     private int row;
 
-    public static final Matrix _1 = new Matrix(1, 1);
+    public static final DeMatrix _1 = new DeMatrix(1, 1);
 
     private final ArrayList<ArrayList<Integer>> core;
 
-    public Matrix(int row, int column){
+    public DeMatrix(int row, int column){
         this.row = row;
         this.column = column;
         core = new ArrayList<>(row);
@@ -24,10 +24,10 @@ public class Matrix {
         }
     }
 
-    public static Matrix getFrom(int[][] data){
+    public static DeMatrix getFrom(int[][] data){
         int row = data.length;
         int column = data[0].length;
-        Matrix m = new Matrix(row, column);
+        DeMatrix m = new DeMatrix(row, column);
 
         for (int i = 0; i < row; i++){
             for (int j = 0; j < column; j++) {
@@ -38,7 +38,7 @@ public class Matrix {
         return m;
     }
 
-    public static Matrix decode(String s){
+    public static DeMatrix decode(String s){
         String[] ss = s.split("\n");
         int row = ss.length, column = 0;
 
@@ -48,7 +48,7 @@ public class Matrix {
             column = Math.max(column, l1);
         }
 
-        Matrix m = new Matrix(row, column);
+        DeMatrix m = new DeMatrix(row, column);
 
         for(int i = 0; i < row; i++){
             String[] cs = ss[i].split(" ");
@@ -61,8 +61,8 @@ public class Matrix {
         return m;
     }
 
-    public Matrix copy(){
-        Matrix m = new Matrix(row, column);
+    public DeMatrix copy(){
+        DeMatrix m = new DeMatrix(row, column);
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
                 m.set(i, j, get(i, j));
@@ -71,20 +71,20 @@ public class Matrix {
         return m;
     }
 
-    public static Matrix plus(Matrix a, Matrix b) throws MatrixException{
+    public static DeMatrix plus(DeMatrix a, DeMatrix b) throws MatrixException{
         return addOrMinus(a, b, true);
     }
 
-    public static Matrix minus(Matrix a, Matrix b) throws MatrixException{
+    public static DeMatrix minus(DeMatrix a, DeMatrix b) throws MatrixException{
         return addOrMinus(a, b, false);
     }
 
-    private static Matrix addOrMinus(Matrix a, Matrix b, boolean add) throws MatrixException {
+    private static DeMatrix addOrMinus(DeMatrix a, DeMatrix b, boolean add) throws MatrixException {
         int row = a.row , column = a.column;
         if(row != b.row || column != b.column){
             throw new MatrixException();
         }
-        Matrix matrix = new Matrix(row, column);
+        DeMatrix matrix = new DeMatrix(row, column);
         for (int i = 0; i < row; i++){
             for (int j = 0; j < column; j++){
                 int aa = a.get(i,j), bb= b.get(i,j);
@@ -96,10 +96,10 @@ public class Matrix {
         return matrix;
     }
 
-    public static Matrix time(Matrix a, Matrix b) throws MatrixException{
+    public static DeMatrix time(DeMatrix a, DeMatrix b) throws MatrixException{
         int r = a.row, l = a.column, c = b.column;
         if(l != b.row) throw new MatrixException();
-        Matrix m = new Matrix(r, c);
+        DeMatrix m = new DeMatrix(r, c);
         for(int i = 0; i < r; i++){
             for(int j = 0; j < c; j++){
                 int cc = 0;
@@ -112,7 +112,7 @@ public class Matrix {
         return m;
     }
 
-    public static Matrix exec(Map<String,Matrix> map, String raw) throws MatrixException{
+    public static DeMatrix exec(Map<String, DeMatrix> map, String raw) throws MatrixException{
         raw = raw.trim();
         int l = raw.length();
         boolean outFromBrackets = false;
@@ -124,7 +124,7 @@ public class Matrix {
         int cl = l / 2, ml = cl + 1;
 
         char[] cs = new char[cl];
-        Matrix[] ms = new Matrix[ml];
+        DeMatrix[] ms = new DeMatrix[ml];
 
         int p1 = 0, p2 = -1,k = 0;
 
@@ -173,17 +173,17 @@ public class Matrix {
         }
 
         char[] ccc = new char[k - 1];
-        Matrix[] mmm = new Matrix[k];
+        DeMatrix[] mmm = new DeMatrix[k];
         System.arraycopy(cs, 0, ccc, 0, k - 1);
         System.arraycopy(ms, 0, mmm, 0, k);
 
         return calc(ccc, mmm);
     }
 
-    private static Matrix calc(char[] cs, Matrix... ms) throws MatrixException{
+    private static DeMatrix calc(char[] cs, DeMatrix... ms) throws MatrixException{
         int cl = cs.length, ml = ms.length;
         if(cl != ml - 1 || cl < 1) throw new MatrixException();
-        Matrix[] ne = new Matrix[ml];
+        DeMatrix[] ne = new DeMatrix[ml];
         char[] pom = new char[cl];
         int p = 0, cp = 0;
         ne[0] = ms[0];
@@ -202,7 +202,7 @@ public class Matrix {
         if(p == 0){
             return ne[0];
         } else {
-            Matrix[] mmm = new Matrix[p + 1];
+            DeMatrix[] mmm = new DeMatrix[p + 1];
             char[] ccc = new char[cp];
             System.arraycopy(ne, 0, mmm, 0, p + 1);
             System.arraycopy(pom, 0, ccc, 0, cp);
@@ -210,30 +210,30 @@ public class Matrix {
         }
     }
 
-    private static Matrix times(Matrix... ms) throws MatrixException{
+    private static DeMatrix times(DeMatrix... ms) throws MatrixException{
         int l = ms.length;
         if(l < 1) throw new MatrixException();
         if(l == 1) return ms[0].copy();
         int row = ms[0].row;
         int column = ms[l - 1].column;
-        Matrix m = ms[0];
+        DeMatrix m = ms[0];
         for(int i = 0; i < l - 1; i++){
             m = time(ms[i], ms[i+1]);
         }
         return m;
     }
 
-    private static Matrix plusOrMinus(char[] cs, Matrix... ms) throws MatrixException{
+    private static DeMatrix plusOrMinus(char[] cs, DeMatrix... ms) throws MatrixException{
         int cl = cs.length, ml = ms.length;
         if(cl != ml - 1 ) throw new MatrixException();
-        Matrix m = ms[0];
+        DeMatrix m = ms[0];
         for (int i = 0; i < cl; i++) {
             m = addOrMinus(m, ms[i+1], tool.isPlus(cs[i]));
         }
         return m;
     }
 
-    private static Matrix calc(Matrix a, char o, Matrix b) throws MatrixException{
+    private static DeMatrix calc(DeMatrix a, char o, DeMatrix b) throws MatrixException{
         if(tool.isTime(o)){
             return time(a, b);
         } else if (tool.isPlus(o)){
@@ -272,11 +272,11 @@ public class Matrix {
         }
     }
 
-    public void timesFrom(Matrix m) throws MatrixException{
+    public void timesFrom(DeMatrix m) throws MatrixException{
 
     }
 
-    private void addOrMinusFrom(Matrix m, boolean add){
+    private void addOrMinusFrom(DeMatrix m, boolean add){
         for(int i = 0; i < row; i++){
             for(int j = 0; j < column; j++){
                 int aa = get(i, j), bb = m.get(i, j);
@@ -286,11 +286,11 @@ public class Matrix {
         }
     }
 
-    public void addFrom(Matrix m){
+    public void addFrom(DeMatrix m){
         addOrMinusFrom(m, true);
     }
 
-    public void minusFrom(Matrix m){
+    public void minusFrom(DeMatrix m){
         addOrMinusFrom(m, false);
     }
 
