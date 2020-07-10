@@ -3,7 +3,12 @@ package com.example.screctzone.cyan._1.math;
 
 import com.example.screctzone.matrix.MatrixException;
 
+import java.text.DecimalFormat;
+import java.util.Locale;
+
 public class Matrix implements Cloneable {
+    public static final DecimalFormat formatter = new DecimalFormat();
+
     private double[][] member;
 
     /**
@@ -57,9 +62,24 @@ public class Matrix implements Cloneable {
     public String toString(){
         StringBuilder s = new StringBuilder();
         int row = row(), column = column();
+
         for(int i = 0; i < row; i++){
             for(int j = 0; j < column; j++){
-                s.append(get(i,j));
+                String n;
+                double thi = get(i, j);
+
+                try {
+                    if (thi == (long) thi) {
+                        n = String.format(Locale.CHINA, "%d", (long) thi);
+                    } else {
+                        n = String.format("%s", thi);
+                    }
+                    s.append(n);
+                } catch (Exception e){
+                    e.printStackTrace();
+                    s.append(thi);
+                }
+
                 char c = j < column - 1 ? ' ' : '\n';
                 s.append(c);
             }

@@ -5,19 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".matrix.MatrixToolActivity">
-
-    <TextView
+    <LinearLayout
         android:id="@+id/matrix_display_1"
         android:layout_width="0dp"
-        android:layout_height="120dp"
-        android:background="#DCDCDC"
-        android:elevation="2dp"
-        android:gravity="bottom|end"
-        android:text="@string/matrix_display_1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/matrix_display_input_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="false"
+            android:digits="(). abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-*×"
+            android:gravity="center_vertical|start"
+            android:hint="@string/A"
+            android:inputType="text"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/matrix_display_text_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#DCDCDC"
+            android:elevation="2dp"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="bottom|end"
+            android:maxHeight="216dp"
+            android:minHeight="108dp"
+            android:padding="8dp"
+            android:text="@string/matrix_display_1"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -70,11 +97,14 @@
         android:gravity="center"
         android:onClick="calc"
         android:text="@string/matrix_calculate_1"
+        android:foreground="?attr/selectableItemBackground"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/activity_matrix_tool_recyclerview_1"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+        tools:targetApi="m"
+        tools:ignore="UnusedAttribute" />
 
 
 

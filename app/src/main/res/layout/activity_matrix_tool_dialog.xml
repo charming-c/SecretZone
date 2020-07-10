@@ -92,7 +92,7 @@
                 android:layout_gravity="start|top"
                 android:layout_weight="1"
                 android:autofillHints="false"
-                android:digits="0123456789\n "
+                android:digits="0123456789\n ."
                 android:ems="10"
                 android:hint="@string/edit_text_tip_2"
                 android:inputType="textMultiLine"
